@@ -1,0 +1,37 @@
+git init   本地初始化一个git仓库
+git add .  将本地所有文件添加到我们本地仓库
+git commit -m "first commit"  提交
+git remote add origin git@github.com:crazy-dking/xxx.git   添加远程连接   
+git push -u origin master   推送代码到远程
+
+
+git remote -v	查看远程库信息
+$ git remote rm origin	删除连接
+
+Git管理的是修改
+git add		      把文件修改添加到暂存区
+git commit		把暂存区的所有内容提交到当前分支(自动创建了master分支)
+git log               查看提交记录
+git status	      查看所有状态		红色——在工作区，需要add
+vi 文件名                           修改
+git clone GitHub地址			下载代码
+git reset --hard HEAD^  或HEAD~100	版本回溯至前n个版本   git reset --hard abc4(comit版本号前几位就行）	只要记得版本号就能重新回来
+git reflog  			记录你的每一次命令
+git checkout -- file		丢弃工作区的修改（让这个文件回到最近一次git commit或git add时的状态）
+git checkout file		切换分支（指针）
+git diff HEAD -- readme.txt	命令可以查看工作区和版本库里面最新版本的区别
+git rm				用于删除一个文件
+$ git checkout -b dev	$ git switch -c dev（√）	创建dev分支，然后【切换】到dev分支（用后者）
+git branch <name>		创建分支
+git branch命令			查看当前分支
+$ git checkout master	git switch master	切换回master分支（用后者）
+git branch -d dev		删除dev分支
+ git merge dev			把dev分支的工作成果合并到master（当前）分支上
+$ git merge --no-ff -m "merge with no-ff" dev	用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来							曾经做过合并。
+git stash			把当前工作现场“储藏”起来
+git stash list			所有stash
+git stash apply			恢复stash（可指定某个stash）
+git stash drop			删除stash
+git stash pop			恢复的同时把stash内容也删了（也可以指定）
+git cherry-pick <commit>	把bug提交的修改“复制”到当前分支
+git branch -D <name>		强行删除。（未合并不让-d删除分支）
