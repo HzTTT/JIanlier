@@ -52,6 +52,16 @@ func main(){
 
 当你打开了一个最大的文件夹后，再在里面分别写两个单独文件夹的go项目（各自一个main包，各自一个mod）会爆红，应该是vscode的识别问题，解决方法，只打开该go项目的文件夹即可，不要打开最大的文件夹。
 
+## 6.go install
+
+导入外部安装包
+
+```go
+go install codesite.ext/author/goExample/goex
+```
+
+
+
 # 4.常量与变量
 
 （一丢丢语法区别）
@@ -516,3 +526,105 @@ for key, value := range map1 {
     }
 ```
 
+# 13.包
+
+## 1.regexp包
+
+```go
+searchIn := "John: 2578.34 William: 4567.23 Steve: 5632.18"
+pat := "[0-9]+.[0-9]+" //正则
+ok, _ := regexp.Match(pat, []byte(searchIn))
+ok, _ := regexp.MatchString(pat, searchIn)
+```
+
+感觉还是整个copy下来，看得通透点
+
+```go
+package main
+import (
+    "fmt"
+    "regexp"
+    "strconv"
+)
+func main() {
+    //目标字符串
+    searchIn := "John: 2578.34 William: 4567.23 Steve: 5632.18"
+    pat := "[0-9]+.[0-9]+" //正则
+    f := func(s string) string {
+        v, _ := strconv.ParseFloat(s, 32)
+        return strconv.FormatFloat(v*2, 'f', 2, 32)
+    }
+    if ok, _ := regexp.Match(pat, []byte(searchIn)); ok {
+        fmt.Println("Match Found!")
+    }
+    re, _ := regexp.Compile(pat)
+    //将匹配到的部分替换为"##.#"
+    str := re.ReplaceAllString(searchIn, "##.#")
+    fmt.Println(str)
+    //参数为函数时
+    str2 := re.ReplaceAllStringFunc(searchIn, f)
+    fmt.Println(str2)
+}
+```
+
+## 2.自定义包
+
+当写自己包的时候，要使用短小的不含有 `_`（下划线）的小写单词来为文件命名
+
+
+
+主程序利用的包必须在主程序编写之前被编译。主程序中每个 pack1 项目都要通过包名来使用：`pack1.Item`
+
+所以如果想不写这个前缀包名
+
+<hr>
+
+```go
+import . "./pack1"
+```
+
+当使用 `.` 作为包的别名时，你可以不通过包名来使用其中的项目。例如：`test := ReturnStr()`。
+
+## 3.godoc工具
+
+差不多是提供一个文档给自己的团队看
+
+在命令行中执行
+
+```go
+godoc -http=:6060 -goroot="."
+
+//（. 是指当前目录，-goroot 参数可以是 /path/to/my/package1 这样的形式指出 package1 在你源码中的位置或接受用冒号形式分隔的路径，无根目录的路径为相对于当前目录的相对路径）
+```
+
+然后去浏览器中打开地址
+
+```go
+http://localhost:6060
+```
+
+就可以看到godoc页面啦
+
+## 4.go install
+
+就是拉取安装一些外部包
+
+
+
+更新到新版本的 Go 之后本地安装包的二进制文件将全被删除。如果你想更新，重编译、重安装所有的 go 安装包可以使用：`go install -a`。
+
+# 14.结构 (struct) 与方法 (method)
+
+## 1.结构体定义
+
+```go
+type identifier struct {
+    field1 type1
+    field2 type2
+    ...
+}
+```
+
+## 2.**选择器 (selector)**
+
+其实就是常用的那个成员指示符  .
