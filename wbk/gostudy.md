@@ -628,3 +628,63 @@ type identifier struct {
 ## 2.**选择器 (selector)**
 
 其实就是常用的那个成员指示符  .
+
+## 3.方法和函数
+
+> 函数
+
+func 函数名（传入参数） 传出参数 即可
+
+> 方法
+
+func (结构体实例) 函数名 （传入参数） 传出参数
+
+结构体实例：这里称为 接收者，接收者可以是指针，也可以不是，但是实际用的时候不受使用者到底是否指针的影响：
+
+```go
+package main
+import (
+    "fmt"
+)
+type B struct {
+    thing int
+}
+func (b *B) change() { b.thing = 1 }
+func (b B) write() string { return fmt.Sprint(b) }
+func main() {
+    var b1 B // b1 是值
+    b1.change()
+    fmt.Println(b1.write())
+    b2 := new(B) // b2 是指针
+    b2.change()
+    fmt.Println(b2.write())
+}
+/* 输出：
+{1}
+{1}
+*/
+```
+
+
+
+这个就很符合java的类的成员方法了，限定只有这个结构体的实例可用
+
+举例：
+
+```go
+type TwoInts struct {
+    a int
+    b int
+}
+
+two1 := new(TwoInts)
+ two1.AddThem()
+
+
+func (tn *TwoInts) AddThem() int {
+    return tn.a + tn.b
+}
+```
+
+注：已有的（比如什么int啥的）不能直接加方法上去的，但是可以间接加：**先定义该类型（比如：`int` 或 `float32(64)`）的别名类型，然后再为别名类型定义方法**
+
